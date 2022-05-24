@@ -1,6 +1,20 @@
+import updateStrategy.*
+
 class TrackingSimulator {
-    var shipments = HashMap<String, Shipment>()
-        private set
+    companion object {
+        var shipments = HashMap<String, Shipment>()
+            private set
+    }
+
+    private val shipmentUpdateStrategies = mapOf<String, ShipmentUpdateStrategy>(
+        Pair("shipped", ShippedUpdateStrategy()),
+        Pair("location", NewLocationUpdateStrategy()),
+        Pair("delayed", DelayedUpdateStrategy()),
+        Pair("noteadded", NoteAddedUpdateStrategy()),
+        Pair("lost", LostUpdateStrategy()),
+        Pair("canceled", CanceledUpdateStrategy()),
+        Pair("delivered", DeliveredUpdateStrategy()),
+    )
 
     fun findShipment(id: String): Shipment? {
         return shipments.get(id)
@@ -8,6 +22,10 @@ class TrackingSimulator {
 
     fun addShipment(shipment: Shipment){
         shipments.put(shipment.id, shipment)
+    }
+
+    fun updateShipment(attributes: List<String>){
+        val shipment = shipmentUpdateStrategies[attributes[0]] ?.createUpdate(attributes[0], attributes) ?: return
     }
 
     fun runSimulation(){
@@ -19,4 +37,5 @@ class TrackingSimulator {
             var shipment = Shipment(updateParts)
         }
     }
+
 }
