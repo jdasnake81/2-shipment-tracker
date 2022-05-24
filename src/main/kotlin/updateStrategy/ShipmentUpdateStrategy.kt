@@ -1,5 +1,7 @@
 package updateStrategy
 
+import ShippingUpdate
+
 interface ShipmentUpdateStrategy {
-    fun createUpdate(updateType: String, updateData: ArrayList<String>)
+    fun createUpdate(updateType: String, updateData: List<String>): ShippingUpdate
 }

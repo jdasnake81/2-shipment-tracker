@@ -7,7 +7,6 @@ class Shipment(initialAttributes: List<String>) {
     var updateHistory = ArrayList<ShippingUpdate>()
     var expectedDeliveryDateTimestamp: Long
     var currentLocation: String
-
     private val shipmentUpdateStrategies = mapOf<String, ShipmentUpdateStrategy>(
         Pair("shipped", ShippedUpdateStrategy()),
         Pair("location", NewLocationUpdateStrategy()),
@@ -21,7 +20,7 @@ class Shipment(initialAttributes: List<String>) {
     init {
         status = initialAttributes[0]
         id = initialAttributes[1]
-        val createdUpdate = ShippingUpdate()
+        addUpdateHistory(initialAttributes)
 //        addUpdateHistory()
     }
 
@@ -29,7 +28,8 @@ class Shipment(initialAttributes: List<String>) {
 
     }
 
-    fun addUpdateHistory(update: ShippingUpdate){
-
+    fun addUpdateHistory(update: List<String>){
+        val update = shipmentUpdateStrategies[update[0]] ?.createUpdate(update[0], update) ?: return
+        updateHistory.add(update)
     }
 }
