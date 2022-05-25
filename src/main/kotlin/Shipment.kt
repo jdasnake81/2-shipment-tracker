@@ -13,15 +13,17 @@ class Shipment(initialAttributes: List<String>) {
 
         status = initialAttributes[0]
         id = initialAttributes[1]
-//        addUpdateHistory(initialAttributes)
-//        addUpdateHistory()
+        expectedDeliveryDateTimestamp = 0
+        currentLocation = ""
+        addUpdateHistory(initialAttributes)
     }
 
     fun addNote(note: String){
-
+        notes.add(note)
     }
 
-    fun addUpdateHistory(update: List<String>){
-        TODO("Parse data to create update object and add to updateHistory")
+    fun addUpdateHistory(attributes: List<String>){
+        val update = ShippingUpdate(attributes, status)
+        updateHistory.add(update)
     }
 }
