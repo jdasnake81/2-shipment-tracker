@@ -1,4 +1,3 @@
-import updateStrategy.*
 
 class Shipment(initialAttributes: List<String>): Observable {
     var status: String = initialAttributes[0]
@@ -10,16 +9,8 @@ class Shipment(initialAttributes: List<String>): Observable {
     val id: String
 
     var notes = ArrayList<String>()
-        set(value) {
-            field = value
-            notifyNoteAdded()
-        }
 
     var updateHistory = ArrayList<ShippingUpdate>()
-        set(value) {
-            field = value
-            notifyUpdateAdded()
-        }
 
     var expectedDeliveryDateTimestamp: Long = 0
         set(value) {
@@ -45,11 +36,13 @@ class Shipment(initialAttributes: List<String>): Observable {
 
     fun addNote(note: String){
         notes.add(note)
+        notifyNoteAdded()
     }
 
     fun addUpdateHistory(attributes: List<String>){
         val update = ShippingUpdate(attributes, status)
         updateHistory.add(update)
+        notifyUpdateAdded()
     }
 
     override fun addObserver(observer: Observer) {

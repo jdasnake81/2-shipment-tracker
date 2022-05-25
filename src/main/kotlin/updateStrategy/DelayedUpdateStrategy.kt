@@ -1,6 +1,5 @@
 package updateStrategy
 
-import ShippingUpdate
 import TrackingSimulator
 
 class DelayedUpdateStrategy : ShipmentUpdateStrategy {

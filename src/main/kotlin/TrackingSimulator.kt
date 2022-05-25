@@ -1,4 +1,7 @@
+import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.*
 import updateStrategy.*
+import java.io.File
 
 class TrackingSimulator {
     companion object {
@@ -26,17 +29,28 @@ class TrackingSimulator {
     }
 
     fun updateShipment(attributes: List<String>){
-        val shipment = shipmentUpdateStrategies[attributes[0]] ?.createUpdate(attributes[0], attributes) ?: return
+        shipmentUpdateStrategies[attributes[0]] ?.createUpdate(attributes[0], attributes) ?: return
     }
 
-    fun runSimulation(){
-        TODO("Implement coroutine to run simulator")
-        TODO("Feed file input into Shipment class to create/update shipment")
-        var fileInput = ""
-        val updateParts = fileInput.split(",")
-        if (updateParts[0] == "created"){
-            var shipment = Shipment(updateParts)
+    fun runSimulation() = CoroutineScope(Dispatchers.Main).launch {
+        var updates = ArrayList<String>()
+        File("test.txt").forEachLine {
+//        File("test1.txt").forEachLine {
+            updates.add(it)
         }
+        for (line in updates){
+            delay(timeMillis = 1000)
+            println(line)
+            var shipment: Shipment?
+            val updateParts = line.split(",")
+            if (updateParts[0] == "created"){
+                shipment = Shipment(updateParts)
+                addShipment(shipment)
+            } else {
+                updateShipment(updateParts)
+            }
+        }
+//        var shipment = Shipment("created,s10000,1652712855468".split(","))
+//        addShipment(shipment)
     }
-
 }

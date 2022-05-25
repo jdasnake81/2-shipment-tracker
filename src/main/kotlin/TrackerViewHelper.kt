@@ -1,20 +1,25 @@
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import java.text.DateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
-class TrackerViewHelper(var id: String?): Observer{
-    var shipmentID = id
-    val shipment = trackShipment(id)
-    var shipmentNotes by mutableStateOf(shipment.notes)
-    var shipmentUpdateHistory by  mutableStateOf(shipment.updateHistory)
-    var shipmentETA by mutableStateOf(shipment.expectedDeliveryDateTimestamp)
-    var shipmentStatus by mutableStateOf(shipment.status)
-    var shipmentLocation by mutableStateOf(shipment.currentLocation)
-
-    init {
-        shipment.addObserver(this)
-    }
+class TrackerViewHelper: Observer{
+    var shipmentID by mutableStateOf("")
+        private set
+    var shipmentNotes by mutableStateOf(ArrayList<String>())
+        private set
+    var shipmentUpdateHistory by  mutableStateOf(ArrayList<ShippingUpdate>())
+        private set
+    var shipmentETA by mutableStateOf(0L)
+        private set
+    var shipmentStatus by mutableStateOf("")
+        private set
+    var shipmentLocation by mutableStateOf("Unknown")
+        private set
+    var verified = true
+        private set
 
     override fun notifyUpdateAdded(updates: ArrayList<ShippingUpdate>) {
         this.shipmentUpdateHistory = updates
@@ -32,17 +37,30 @@ class TrackerViewHelper(var id: String?): Observer{
         this.shipmentETA = timestamp
     }
 
+    fun expectedDeliveryToDate(): Date {
+        return Date(shipmentETA)
+    }
+
     override fun notifyLocationChange(location: String) {
         this.shipmentLocation = location
     }
 
-    fun trackShipment(id: String?): Shipment{
+    fun trackShipment(id: String){
         val shipment = TrackingSimulator.shipments[id]
-        return shipment
+        if (shipment != null) {
+            shipment.addObserver(this)
+            shipmentID = shipment.id
+            shipmentNotes = shipment.notes
+            shipmentUpdateHistory = shipment.updateHistory
+            shipmentETA = shipment.expectedDeliveryDateTimestamp
+            shipmentStatus = shipment.status
+            shipmentLocation = shipment.currentLocation
+        }
+        else verified = false
     }
 
-    fun stopTracking(){
-        shipment.removeObserver(this)
+    fun stopTracking() {
+        TrackingSimulator.shipments[shipmentID]?.removeObserver(this)
     }
 
 }
