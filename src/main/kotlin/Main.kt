@@ -80,14 +80,6 @@ fun App() {
                     }
                 }
             }
-//            Column {
-//                TrackingSimulator.shipments.forEach {
-//                    Text(it.toString())
-//                }
-//            }
-//            ShipmentView(TrackerViewHelper(), rememberCoroutineScope())
-//            ShipmentView(TrackerViewHelper(), rememberCoroutineScope())
-//            ShipmentView(TrackerViewHelper(), rememberCoroutineScope())
         }
     }
 }

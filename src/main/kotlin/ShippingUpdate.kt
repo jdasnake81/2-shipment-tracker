@@ -1,4 +1,3 @@
-import updateStrategy.*
 import java.util.Date
 
 class ShippingUpdate(attributes: List<String>, private val previousStatus: String) {
@@ -11,7 +10,6 @@ class ShippingUpdate(attributes: List<String>, private val previousStatus: Strin
     init {
         newStatus = attributes[0]
         timestamp = attributes[2].toLong()
-//        statusChange = true
         statusChange = previousStatus != newStatus
     }
 

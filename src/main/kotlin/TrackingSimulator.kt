@@ -1,4 +1,3 @@
-import androidx.compose.runtime.rememberCoroutineScope
 import kotlinx.coroutines.*
 import updateStrategy.*
 import java.io.File
@@ -20,10 +19,6 @@ class TrackingSimulator {
         Pair("delivered", FinalUpdateStrategy()),
     )
 
-    fun findShipment(id: String): Shipment? {
-        return shipments.get(id)
-    }
-
     fun addShipment(shipment: Shipment){
         shipments.put(shipment.id, shipment)
     }
@@ -35,7 +30,6 @@ class TrackingSimulator {
     fun runSimulation() = CoroutineScope(Dispatchers.Main).launch {
         var updates = ArrayList<String>()
         File("test.txt").forEachLine {
-//        File("test1.txt").forEachLine {
             updates.add(it)
         }
         for (line in updates){
@@ -50,7 +44,5 @@ class TrackingSimulator {
                 updateShipment(updateParts)
             }
         }
-//        var shipment = Shipment("created,s10000,1652712855468".split(","))
-//        addShipment(shipment)
     }
 }
