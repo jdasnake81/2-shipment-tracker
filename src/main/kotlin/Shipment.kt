@@ -53,23 +53,23 @@ class Shipment(initialAttributes: List<String>): Observable {
         observers.remove(observer)
     }
 
-    private fun notifyStatusChange() {
+    override fun notifyStatusChange() {
         observers.forEach { it.notifyStatusChanged(status)}
     }
 
-    private fun notifyNoteAdded() {
+    override fun notifyNoteAdded() {
         observers.forEach { it.notifyNoteAdded(notes)}
     }
 
-    private fun notifyUpdateAdded() {
+    override fun notifyUpdateAdded() {
         observers.forEach { it.notifyUpdateAdded(updateHistory)}
     }
 
-    private fun notifyETAChange() {
+    override fun notifyETAChange() {
         observers.forEach { it.notifyETAChangeTimestamp(expectedDeliveryDateTimestamp)}
     }
 
-    private fun notifyLocationChange() {
+    override fun notifyLocationChange() {
         observers.forEach { it.notifyLocationChange(currentLocation)}
     }
 }
