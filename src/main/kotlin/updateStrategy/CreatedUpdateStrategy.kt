@@ -1,9 +1,10 @@
 package updateStrategy
 
-import ShippingUpdate
+import Shipment
 
 class CreatedUpdateStrategy : ShipmentUpdateStrategy {
-    override fun createUpdate(updateType: String, updateData: List<String>): ShippingUpdate {
-        TODO("Not yet implemented")
+    override fun createUpdate(updateType: String, updateData: List<String>) {
+        val shipment = Shipment(updateData)
+        shipment.addUpdateHistory(updateData)
     }
 }

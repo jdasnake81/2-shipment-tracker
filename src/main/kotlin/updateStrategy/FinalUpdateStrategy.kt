@@ -1,8 +1,6 @@
 package updateStrategy
 
-import ShippingUpdate
-
-class DeliveredUpdateStrategy : ShipmentUpdateStrategy {
+class FinalUpdateStrategy : ShipmentUpdateStrategy {
     override fun createUpdate(updateType: String, updateData: List<String>) {
         val shipment = TrackingSimulator.shipments.get(updateData[1])
         if (shipment != null) {

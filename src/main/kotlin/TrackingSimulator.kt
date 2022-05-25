@@ -7,13 +7,14 @@ class TrackingSimulator {
     }
 
     private val shipmentUpdateStrategies = mapOf<String, ShipmentUpdateStrategy>(
+        Pair("created", CreatedUpdateStrategy()),
         Pair("shipped", ShippedUpdateStrategy()),
         Pair("location", NewLocationUpdateStrategy()),
         Pair("delayed", DelayedUpdateStrategy()),
         Pair("noteadded", NoteAddedUpdateStrategy()),
-        Pair("lost", LostUpdateStrategy()),
-        Pair("canceled", CanceledUpdateStrategy()),
-        Pair("delivered", DeliveredUpdateStrategy()),
+        Pair("lost", FinalUpdateStrategy()),
+        Pair("canceled", FinalUpdateStrategy()),
+        Pair("delivered", FinalUpdateStrategy()),
     )
 
     fun findShipment(id: String): Shipment? {
